@@ -1,0 +1,176 @@
+NTPD
+======
+
+# yum install ntp -y
+
+# systemctl start ntpd
+
+# systemctl enable ntpd
+
+# cp /etc/ntp.conf /etc/ntp.conf.orig
+
+# vim /etc/ntp.conf
+
+
+umcomment allow client ip section
+
+restrict 10.0.0.0 mask 255.255.255.240 nomodify notrap [allow client ip]
+
+esc
+:wq!
+
+# systemctl restart ntpd
+
+
+
+set india time
+
+# timedatectl set-timezoe Asia/Kolkata
+
+# timedatectl
+
+  Local time: Wed 2020-05-06 13:00:14 IST
+  Universal time: Wed 2020-05-06 07:30:14 UTC
+        RTC time: Wed 2020-05-06 07:30:14
+       Time zone: Asia/Kolkata (IST, +0530)
+     NTP enabled: yes
+NTP synchronized: yes
+ RTC in local TZ: no
+      DST active: n/a
+
+
+# timedatectl | grep NTP
+
+#timedatectl set-ntp true
+
+NTP enabled: yes
+NTP synchronized: yes
+
+# ntpq -p
+
+# ntpstat
+
+
+
+
+
+client machine1
+==============
+
+# yum install ntp -y
+
+# systemctl start ntpd
+
+# systemctl enable ntpd
+
+# cp /etc/ntp.conf /etc/ntp.conf.orig
+
+# vim /etc/ntp.conf
+
+
+commentout server section 
+
+server 10.0.0.26
+
+esc
+:wq!
+
+# timedatectl | grep NTP
+
+#timedatectl set-ntp true
+
+NTP enabled: yes
+NTP synchronized: yes
+
+# ntpq -p
+
+# ntpstat
+synchronised to NTP server (52.172.27.135) at stratum 3
+   time correct to within 108 ms
+   polling server every 64 s
+
+
+
+=================================================================================================================
+
+configure NTP server using chronyd 
+=================================
+
+# yum install chrony -y
+
+# systemctl start chronyd
+
+# systemctl enable chronyd
+
+# cp /etc/chrony.conf /etc/chrony.conf.orig
+
+# vim /etc/chrony.conf
+
+
+umcomment allow client ip section
+
+allow client ip
+
+esc
+:wq!
+
+# systemctl restart chronyd
+
+
+
+client machine
+==============
+
+# yum install chrony -y
+
+# systemctl start chronyd
+
+# systemctl enable chronyd
+
+# cp /etc/chrony.conf /etc/chrony.conf.orig
+
+# vim /etc/chrony.conf
+
+
+commentout server section 
+
+server ip of server
+
+esc
+:wq!
+
+# systemctl restart chronyd
+
+
+client machine
+==============
+
+# chronyc sources
+
+210 Number of sources = 1
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^? ip-172-31-13-163.ap-sout>     0   7     0     -     +0ns[   +0ns] +/-    0ns
+
+
+
+server side 
+==========
+
+# chronyc sources
+
+chronyc sources
+210 Number of sources = 5
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^* 169.254.169.123               3   4   377     5    -10us[  -11us] +/-  484us
+^- 45.86.70.11                   2   6   377    51  +9124us[+9124us] +/-  200ms
+^- 157.119.108.165               3   6   377    54  +1689us[+1689us] +/-  108ms
+^- 185.216.231.25                2   6   367    49  +3546us[+3545us] +/-  135ms
+^- fayetteville.nc.us.logip>     2   6   277    52  +2539us[+2539us] +/-  185ms
+
+
+
+
+
+
